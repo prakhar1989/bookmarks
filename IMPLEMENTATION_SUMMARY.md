@@ -21,7 +21,6 @@ Successfully implemented a full-stack AI-powered bookmarking application as spec
 ### ✅ Phase 2: Backend Infrastructure
 
 - **Utility Functions** (`lib/bookmark-utils.ts`):
-
   - URL normalization (removes tracking params, www, etc.)
   - Content hashing for idempotency
   - Tag management (ensure tags, update bookmark tags)
@@ -29,7 +28,6 @@ Successfully implemented a full-stack AI-powered bookmarking application as spec
   - Content truncation
 
 - **Content Extraction** (`lib/content-extractor.ts`):
-
   - HTML fetching with timeout and size limits
   - Mozilla Readability integration for clean text extraction
   - Favicon and metadata extraction
@@ -37,7 +35,6 @@ Successfully implemented a full-stack AI-powered bookmarking application as spec
   - Used linkedom instead of jsdom for Next.js compatibility
 
 - **LLM Client** (`lib/llm-client.ts`):
-
   - OpenAI GPT-4o-mini integration
   - Structured output with JSON schema
   - Automatic retry logic with exponential backoff

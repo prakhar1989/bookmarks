@@ -5,12 +5,10 @@ Personal bookmarking app where you can:
 
 - Save links with optional note.
 - Automatically:
-
   - Fetch & extract page content from a URL.
   - Generate summary + tags via an LLM.
 
 - Search bookmarks by:
-
   - Title / URL
   - Tags
   - Content / summary
@@ -19,7 +17,6 @@ Personal bookmarking app where you can:
 
 - Single-user (you) to start, but we’ll design multi-tenant-friendly.
 - Stack:
-
   - **Next.js** (App Router, server components)
   - **Neon** (Postgres + Neon Auth)
   - **Tailwind CSS + shadcn/ui**
@@ -34,7 +31,6 @@ Personal bookmarking app where you can:
 **Frontend (Next.js app router)**
 
 - Pages:
-
   - `/` – main bookmarks list + search + tag filters
   - `/new` – add new bookmark (URL + optional note)
   - `/b/[id]` – bookmark detail (full summary, tags, raw content snippet)
@@ -43,20 +39,16 @@ Personal bookmarking app where you can:
 **Backend**
 
 - Neon Postgres for:
-
   - Users
   - Bookmarks
   - Tags & bookmark-tag join
   - LLM extraction metadata
 
 - Neon Auth for:
-
   - Sessions & user identification
 
 - LLM & extractor:
-
   - Route handler or server action calling:
-
     - `fetch()` to pull page HTML
     - Local readability parser (e.g., Mozilla Readability in a Node DOM environment) or external “readability”/link-preview API.
     - LLM call to summarize + tag.
@@ -64,7 +56,6 @@ Personal bookmarking app where you can:
 **Processing model**
 
 - When a bookmark is created:
-
   1. Save record with `status = 'pending'`.
   2. Trigger content-extraction & LLM summarization on the server.
   3. Update bookmark with `status = 'processed'`, summary, tags, `search_vector`, etc.
@@ -215,7 +206,6 @@ And keep it in sync via triggers or update it from app code after you update sum
 
 - Server-side `fetch(url)` from your route handler / server action.
 - Handle:
-
   - Redirects (follow automatically).
   - Timeout (~5–10s).
   - Size limit (e.g. only first 1–2MB).
@@ -225,17 +215,13 @@ And keep it in sync via triggers or update it from app code after you update sum
 Options:
 
 1. **Local readability**:
-
    - Use `jsdom` + `mozilla/readability` to get a cleaned article body and title.
    - Extract:
-
      - `readableTitle`
      - `content` as HTML, then strip tags to plain text.
 
 2. **Third-party “reader” API**:
-
    - If you want to avoid running DOM parsing yourself, you can call a Readability/preview API that gives you:
-
      - `title`, `description`, `content`, `image`, etc.
 
 For V1, I’d go with local readability to keep everything in your stack.
@@ -245,7 +231,6 @@ For V1, I’d go with local readability to keep everything in your stack.
 - LLM doesn’t need full article if huge.
 - Keep e.g. first 10–15k characters / ~5–8k tokens.
 - You can also extract:
-
   - `<meta>` tags (title, description).
   - `og:title`, `og:description`.
   - `keywords` meta if present.
@@ -302,15 +287,12 @@ Example schema:
 - Upsert into `bookmark_contents`.
 - If `title` was missing, update `bookmarks.title` with LLM title.
 - For tags:
-
   - For each tag name:
-
     - Normalize (trim, lowercase).
     - `INSERT ... ON CONFLICT DO NOTHING` into `tags`.
     - Insert into `bookmark_tags`.
 
 - Set:
-
   - `status = 'processed'`
   - `last_processed_at = now()`
   - `llm_model`, `llm_version`.
@@ -318,7 +300,6 @@ Example schema:
 **Step 6: Error handling**
 
 - On any failure:
-
   - Set `status = 'failed'`, `error_message = '...'`.
   - UI can show a “retry extraction” button.
 
@@ -346,15 +327,12 @@ Assuming **App Router**.
 2. Normalize URL.
 3. Insert `bookmarks` row.
 4. If `tags` provided:
-
    - Ensure tags exist in `tags` table and link via `bookmark_tags`.
 
 5. Call extraction pipeline:
-
    - Either inline or `void` call to background route.
 
 6. Return bookmark data:
-
    - `status: 'processed' | 'pending'` depending on inline vs async.
 
 ### 5.2 Get bookmarks list: `GET /api/bookmarks`
@@ -396,13 +374,11 @@ Return all tags for user with counts.
 ### 6.1 Main list page (`/`)
 
 - Top bar:
-
   - Search input (free text).
   - Tag filter (multi-select or horizontal chips).
   - “Add bookmark” button.
 
 - Bookmark cards (shadcn `Card`):
-
   - Title (clickable, opens detail page).
   - URL (small, muted).
   - Short summary.
@@ -414,7 +390,6 @@ Return all tags for user with counts.
 ### 6.2 Add bookmark form (`/new`)
 
 - Inputs:
-
   - URL (required).
   - Description (optional).
   - Tags (optional, maybe simple comma-separated or tag selector).
@@ -425,7 +400,6 @@ Return all tags for user with counts.
 ### 6.3 Bookmark detail (`/b/[id]`)
 
 - Show:
-
   - Title + URL
   - Description
   - Tags (editable)
@@ -445,7 +419,6 @@ Return all tags for user with counts.
 
 - Every query filters by `user_id`.
 - Use Neon Auth middleware to get session user:
-
   - Attach `userId` to `NextRequest`.
 
 - In all API handlers, **never** trust client-sent `user_id`.
@@ -461,7 +434,6 @@ Here’s a task list you can more or less paste into Linear/Jira.
 ### 8.1 Data layer & migrations
 
 1. **Create DB schema**
-
    - [ ] Add `users` table (if not already).
    - [ ] Add `bookmark_status` enum.
    - [ ] Add `bookmarks` table.
@@ -471,13 +443,11 @@ Here’s a task list you can more or less paste into Linear/Jira.
    - [ ] Add unique index on `(user_id, normalized_url)`.
 
 2. **Drizzle / ORM models (if using)**
-
    - [ ] Define schema for all tables.
    - [ ] Generate migrations.
    - [ ] Run migrations against Neon.
 
 3. **Utility functions**
-
    - [ ] `normalizeUrl(url: string): string`
    - [ ] `ensureTags(userId, tagNames[]): Promise<tagIds[]>`
    - [ ] `updateSearchVector(bookmarkId)` helper (or put into same transaction as content update).
@@ -487,23 +457,19 @@ Here’s a task list you can more or less paste into Linear/Jira.
 ### 8.2 LLM & extraction layer
 
 4. **HTML fetching & readability**
-
    - [ ] Implement `fetchPageHtml(url: string): Promise<string | null>` with timeout and size limit.
    - [ ] Set up `jsdom` + `readability` (or external API) to parse HTML.
    - [ ] Implement `extractReadableContent(html, url)` returning `{title, metaDescription, textContent}`.
 
 5. **LLM client**
-
    - [ ] Add OpenAI client wrapper using your API key from env.
    - [ ] Write `summarizeAndTag({ url, title, metaDescription, contentText }): Promise<LLMResult>`.
    - [ ] Use JSON schema/response_format for stricter output.
    - [ ] Implement retry (e.g., up to 2 times on transient errors).
 
 6. **Content processing pipeline**
-
    - [ ] Implement `processBookmark(bookmarkId, {forceReprocess?: boolean})`.
    - [ ] Inside:
-
      - [ ] Fetch bookmark + user.
      - [ ] Fetch HTML, parse, truncate content.
      - [ ] Call LLM, parse result.
@@ -513,7 +479,6 @@ Here’s a task list you can more or less paste into Linear/Jira.
      - [ ] Update `search_vector`.
 
 7. **Error handling**
-
    - [ ] Catch parse or LLM errors, set `status='failed'` and `error_message`.
    - [ ] Add logging (console or proper logging).
 
@@ -522,7 +487,6 @@ Here’s a task list you can more or less paste into Linear/Jira.
 ### 8.3 API routes / server actions
 
 8. **Create bookmark route**
-
    - [ ] `POST /api/bookmarks`
    - [ ] Validate input (Zod).
    - [ ] Get current user from auth.
@@ -533,30 +497,25 @@ Here’s a task list you can more or less paste into Linear/Jira.
    - [ ] Return processed bookmark + tags.
 
 9. **List bookmarks route**
-
    - [ ] `GET /api/bookmarks`
    - [ ] Query params: `q`, `tag`, `status`, `page`, `pageSize`.
    - [ ] If `q` provided:
-
      - [ ] Build full-text query using `to_tsquery` / `plainto_tsquery`.
      - [ ] Join bookmarks + contents + tags.
 
    - [ ] Return paginated list.
 
 10. **Get bookmark by id**
-
     - [ ] `GET /api/bookmarks/[id]`
     - [ ] Auth check (must belong to user).
     - [ ] Return details, contents, tags.
 
 11. **Retry extraction endpoint**
-
     - [ ] `POST /api/bookmarks/[id]/reprocess`
     - [ ] Auth check.
     - [ ] Call `processBookmark` with `forceReprocess: true`.
 
 12. **Tags endpoint**
-
     - [ ] `GET /api/tags`
     - [ ] Return tags + bookmark counts.
 
@@ -565,16 +524,13 @@ Here’s a task list you can more or less paste into Linear/Jira.
 ### 8.4 Frontend pages & components
 
 13. **Shell & layout**
-
     - [ ] App layout with navbar (“Bookmarks”, “New”, maybe “Settings”).
     - [ ] Dark/light mode (optional).
 
 14. **Bookmarks list page (`/`)**
-
     - [ ] Search bar hooked to query param `q`.
     - [ ] Tag filter component (chips or multi-select using shadcn `Badge`/`Command`).
     - [ ] Bookmark card component:
-
       - [ ] Title (link to `/b/[id]`).
       - [ ] URL (truncated).
       - [ ] Short summary.
@@ -584,17 +540,14 @@ Here’s a task list you can more or less paste into Linear/Jira.
     - [ ] Pagination UI (Next/Prev).
 
 15. **New bookmark page (`/new`)**
-
     - [ ] Form using shadcn `Form` + `Input` + `Textarea`.
     - [ ] POST to `/api/bookmarks`.
     - [ ] Show loading state & toast (e.g., `sonner`).
     - [ ] On success: redirect to `/` or `/b/[id]`.
 
 16. **Bookmark detail page (`/b/[id]`)**
-
     - [ ] Fetch bookmark via `fetch` or server component.
     - [ ] Render full details:
-
       - [ ] Title, URL, description.
       - [ ] Tags with ability to add/remove (optional for v1).
       - [ ] Short and long summary.
@@ -602,7 +555,6 @@ Here’s a task list you can more or less paste into Linear/Jira.
       - [ ] “Retry extraction” button hooked to API.
 
 17. **Settings page (`/settings`)** (optional for v1)
-
     - [ ] Display which LLM model is in use (read from env).
     - [ ] Toggle: “Auto-extract on save” (per-user config) – optional, requires `user_settings` table.
 
@@ -639,11 +591,9 @@ Here’s a task list you can more or less paste into Linear/Jira.
 22. **Tests**
 
 - [ ] Unit tests for:
-
   - URL normalization.
   - Tag upsert logic.
 
 - [ ] Integration tests for:
-
   - Create bookmark -> LLM pipeline (mock LLM).
   - Search endpoint.

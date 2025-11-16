@@ -3,7 +3,13 @@
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import { Favicon } from "./favicon";
-import { ExternalLink, AlertCircle, Clock, CheckCircle, Trash2 } from "lucide-react";
+import {
+  ExternalLink,
+  AlertCircle,
+  Clock,
+  CheckCircle,
+  Trash2,
+} from "lucide-react";
 
 interface Tag {
   id: string;
@@ -132,7 +138,9 @@ export function BookmarkCard({
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
-                  if (confirm("Are you sure you want to delete this bookmark?")) {
+                  if (
+                    confirm("Are you sure you want to delete this bookmark?")
+                  ) {
                     onDelete(id);
                   }
                 }}

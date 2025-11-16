@@ -89,7 +89,9 @@ export function BookmarksList() {
         };
       });
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to delete bookmark");
+      setError(
+        err instanceof Error ? err.message : "Failed to delete bookmark",
+      );
     }
   };
 
