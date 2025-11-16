@@ -7,14 +7,15 @@ import type { Metadata } from "next";
 import * as schema from "@/app/schema/schema";
 import { Header } from "@/app/header";
 import { stackServerApp } from "@/app/stack";
-import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Favicon } from "@/components/bookmarks/favicon";
 import { DeleteBookmarkButton } from "@/components/bookmarks/delete-bookmark-button";
+import { EditNote } from "@/components/bookmarks/edit-note";
+import { EditSummary } from "@/components/bookmarks/edit-summary";
+import { ReprocessButton } from "@/components/bookmarks/reprocess-button";
 import {
   ArrowLeft,
   ExternalLink,
-  RefreshCw,
   AlertCircle,
   Clock,
   CheckCircle,
@@ -196,7 +197,10 @@ export default async function BookmarkDetailPage({
             <ArrowLeft className="w-4 h-4" />
             Back to bookmarks
           </Link>
-          <DeleteBookmarkButton bookmarkId={bookmark.id} />
+          <div className="flex gap-2">
+            <ReprocessButton bookmarkId={bookmark.id} />
+            <DeleteBookmarkButton bookmarkId={bookmark.id} />
+          </div>
         </div>
 
         <div className="space-y-6">
@@ -263,43 +267,29 @@ export default async function BookmarkDetailPage({
                 )}
 
                 {/* Personal Note */}
-                {bookmark.description && (
-                  <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-md">
-                    <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                      Your Note:
-                    </p>
-                    <p className="text-gray-900 dark:text-gray-100">
-                      {bookmark.description}
-                    </p>
-                  </div>
-                )}
+                <EditNote
+                  bookmarkId={bookmark.id}
+                  initialNote={bookmark.description}
+                />
               </div>
             </div>
           </Card>
 
           {/* Error Message */}
           {bookmark.status === "failed" && bookmark.errorMessage && (
-            <Card className="p-4 bg-red-50 border-red-200">
+            <Card className="p-4 bg-red-50 border-red-200 dark:bg-red-950/20 dark:border-red-900/50">
               <div className="flex items-start gap-3">
                 <AlertCircle className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
                 <div className="flex-1">
-                  <p className="font-medium text-red-900 mb-1">
+                  <p className="font-medium text-red-900 dark:text-red-300 mb-1">
                     Processing Failed
                   </p>
-                  <p className="text-sm text-red-700">
+                  <p className="text-sm text-red-700 dark:text-red-400">
                     {bookmark.errorMessage}
                   </p>
-                  <form action={`/api/bookmarks/${id}/reprocess`} method="POST">
-                    <Button
-                      type="submit"
-                      variant="outline"
-                      className="mt-3"
-                      size="sm"
-                    >
-                      <RefreshCw className="w-4 h-4 mr-2" />
-                      Retry Extraction
-                    </Button>
-                  </form>
+                  <p className="text-xs text-red-600 dark:text-red-400 mt-2">
+                    Use the &ldquo;Reprocess with AI&rdquo; button above to retry.
+                  </p>
                 </div>
               </div>
             </Card>
@@ -308,21 +298,23 @@ export default async function BookmarkDetailPage({
           {/* Summaries */}
           {bookmark.summaryShort && (
             <Card className="p-6">
-              <h2 className="text-lg font-semibold mb-3">Summary</h2>
-              <p className="text-gray-700 dark:text-gray-300">
-                {bookmark.summaryShort}
-              </p>
+              <EditSummary
+                bookmarkId={bookmark.id}
+                initialSummary={bookmark.summaryShort}
+                type="short"
+                title="Summary"
+              />
             </Card>
           )}
 
           {bookmark.summaryLong && (
             <Card className="p-6">
-              <h2 className="text-lg font-semibold mb-3">Detailed Summary</h2>
-              <div className="prose prose-sm max-w-none">
-                <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">
-                  {bookmark.summaryLong}
-                </p>
-              </div>
+              <EditSummary
+                bookmarkId={bookmark.id}
+                initialSummary={bookmark.summaryLong}
+                type="long"
+                title="Detailed Summary"
+              />
             </Card>
           )}
 

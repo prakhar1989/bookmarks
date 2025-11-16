@@ -95,6 +95,84 @@ export async function GET(
 }
 
 /**
+ * PATCH /api/bookmarks/[id] - Update bookmark description or summaries
+ */
+export async function PATCH(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) {
+  try {
+    // Get authenticated user
+    const user = await stackServerApp.getUser();
+    if (!user || !user.id) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const { id } = await params;
+    const body = await request.json();
+    const { description, summaryShort, summaryLong } = body;
+
+    // Initialize database
+    const db = drizzle(neon(process.env.DATABASE_URL!), { schema });
+
+    // Verify bookmark exists and belongs to user
+    const existingBookmark = await db
+      .select({ id: schema.bookmarks.id })
+      .from(schema.bookmarks)
+      .where(
+        and(eq(schema.bookmarks.id, id), eq(schema.bookmarks.userId, user.id)),
+      )
+      .limit(1);
+
+    if (existingBookmark.length === 0) {
+      return NextResponse.json(
+        { error: "Bookmark not found" },
+        { status: 404 },
+      );
+    }
+
+    // Update description if provided
+    if (description !== undefined) {
+      await db
+        .update(schema.bookmarks)
+        .set({
+          description,
+          updatedAt: new Date(),
+        })
+        .where(
+          and(eq(schema.bookmarks.id, id), eq(schema.bookmarks.userId, user.id)),
+        );
+    }
+
+    // Update summaries if provided
+    if (summaryShort !== undefined || summaryLong !== undefined) {
+      const updateData: Record<string, string> = {};
+      if (summaryShort !== undefined) updateData.summaryShort = summaryShort;
+      if (summaryLong !== undefined) updateData.summaryLong = summaryLong;
+
+      await db
+        .update(schema.bookmarkContents)
+        .set(updateData)
+        .where(eq(schema.bookmarkContents.bookmarkId, id));
+    }
+
+    return NextResponse.json({
+      success: true,
+      message: "Bookmark updated successfully",
+    });
+  } catch (error) {
+    console.error("Error updating bookmark:", error);
+    return NextResponse.json(
+      {
+        error: "Internal server error",
+        message: error instanceof Error ? error.message : "Unknown error",
+      },
+      { status: 500 },
+    );
+  }
+}
+
+/**
  * DELETE /api/bookmarks/[id] - Delete a bookmark and its related content
  */
 export async function DELETE(
