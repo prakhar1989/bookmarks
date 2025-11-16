@@ -168,7 +168,7 @@ export default async function BookmarkDetailPage({
       <div className="flex flex-1 flex-col">
         <Header />
         <main className="mx-auto w-full flex-1 max-w-3xl px-4 py-16">
-          <p className="text-center text-gray-600">
+          <p className="text-center text-gray-600 dark:text-gray-400">
             Please sign in to view bookmarks.
           </p>
         </main>
@@ -215,7 +215,7 @@ export default async function BookmarkDetailPage({
                   {bookmark.title || bookmark.url}
                 </h1>
 
-                <div className="flex items-center gap-4 text-sm text-gray-600 mb-4">
+                <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400 mb-4">
                   <a
                     href={bookmark.url}
                     target="_blank"
@@ -264,11 +264,11 @@ export default async function BookmarkDetailPage({
 
                 {/* Personal Note */}
                 {bookmark.description && (
-                  <div className="p-4 bg-gray-50 rounded-md">
-                    <p className="text-sm font-medium text-gray-700 mb-1">
+                  <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-md">
+                    <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                       Your Note:
                     </p>
-                    <p className="text-gray-900">{bookmark.description}</p>
+                    <p className="text-gray-900 dark:text-gray-100">{bookmark.description}</p>
                   </div>
                 )}
               </div>
@@ -307,7 +307,7 @@ export default async function BookmarkDetailPage({
           {bookmark.summaryShort && (
             <Card className="p-6">
               <h2 className="text-lg font-semibold mb-3">Summary</h2>
-              <p className="text-gray-700">{bookmark.summaryShort}</p>
+              <p className="text-gray-700 dark:text-gray-300">{bookmark.summaryShort}</p>
             </Card>
           )}
 
@@ -315,7 +315,7 @@ export default async function BookmarkDetailPage({
             <Card className="p-6">
               <h2 className="text-lg font-semibold mb-3">Detailed Summary</h2>
               <div className="prose prose-sm max-w-none">
-                <p className="text-gray-700 whitespace-pre-wrap">
+                <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">
                   {bookmark.summaryLong}
                 </p>
               </div>
@@ -327,14 +327,14 @@ export default async function BookmarkDetailPage({
             <h2 className="text-lg font-semibold mb-3">Metadata</h2>
             <dl className="grid grid-cols-2 gap-4 text-sm">
               <div>
-                <dt className="text-gray-600 mb-1">Created</dt>
+                <dt className="text-gray-600 dark:text-gray-400 mb-1">Created</dt>
                 <dd className="font-medium">
                   {new Date(bookmark.createdAt).toLocaleString()}
                 </dd>
               </div>
               {bookmark.lastProcessedAt && (
                 <div>
-                  <dt className="text-gray-600 mb-1">Last Processed</dt>
+                  <dt className="text-gray-600 dark:text-gray-400 mb-1">Last Processed</dt>
                   <dd className="font-medium">
                     {new Date(bookmark.lastProcessedAt).toLocaleString()}
                   </dd>
@@ -342,13 +342,13 @@ export default async function BookmarkDetailPage({
               )}
               {bookmark.language && (
                 <div>
-                  <dt className="text-gray-600 mb-1">Language</dt>
+                  <dt className="text-gray-600 dark:text-gray-400 mb-1">Language</dt>
                   <dd className="font-medium uppercase">{bookmark.language}</dd>
                 </div>
               )}
               {bookmark.sourceType && (
                 <div>
-                  <dt className="text-gray-600 mb-1">Type</dt>
+                  <dt className="text-gray-600 dark:text-gray-400 mb-1">Type</dt>
                   <dd className="font-medium capitalize">
                     {bookmark.sourceType}
                   </dd>
@@ -356,7 +356,7 @@ export default async function BookmarkDetailPage({
               )}
               {bookmark.llmModel && (
                 <div>
-                  <dt className="text-gray-600 mb-1">AI Model</dt>
+                  <dt className="text-gray-600 dark:text-gray-400 mb-1">AI Model</dt>
                   <dd className="font-medium">{bookmark.llmModel}</dd>
                 </div>
               )}

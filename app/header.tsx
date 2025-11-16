@@ -11,7 +11,7 @@ export function Header() {
   const app = useStackApp();
 
   return (
-    <header className="sticky top-0 z-20 border-b bg-background/80 py-3 backdrop-blur supports-[backdrop-filter]:bg-background/70">
+    <header className="sticky top-0 z-20 border-b bg-background/80 py-3">
       <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4">
         <div className="flex items-center gap-3">
           <Image
