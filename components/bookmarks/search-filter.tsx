@@ -48,7 +48,7 @@ export function SearchFilter({ tags }: SearchFilterProps) {
     <div className="space-y-4">
       {/* Search Bar */}
       <div className="relative">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-gray-500" />
         <Input
           type="text"
           placeholder="Search bookmarks..."
@@ -66,7 +66,7 @@ export function SearchFilter({ tags }: SearchFilterProps) {
             className={`px-3 py-1 text-sm rounded-md transition-colors ${
               selectedTag === ""
                 ? "bg-primary text-primary-foreground"
-                : "bg-orange-100 text-orange-700 hover:bg-orange-200"
+                : "bg-orange-100 text-orange-700 hover:bg-orange-200 dark:bg-orange-900/30 dark:text-orange-300 dark:hover:bg-orange-900/50"
             }`}
           >
             All Tags
@@ -78,7 +78,7 @@ export function SearchFilter({ tags }: SearchFilterProps) {
               className={`px-3 py-1 text-sm rounded-md transition-colors ${
                 selectedTag === tag.name
                   ? "bg-primary text-primary-foreground"
-                  : "bg-orange-100 text-orange-700 hover:bg-orange-200"
+                  : "bg-orange-100 text-orange-700 hover:bg-orange-200 dark:bg-orange-900/30 dark:text-orange-300 dark:hover:bg-orange-900/50"
               }`}
             >
               {tag.name} ({tag.bookmarkCount})

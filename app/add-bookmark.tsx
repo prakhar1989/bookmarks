@@ -68,7 +68,7 @@ export function AddBookmarkForm() {
         <div>
           <label
             htmlFor="url"
-            className="block text-sm font-medium text-gray-700 mb-1"
+            className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
           >
             URL *
           </label>
@@ -86,7 +86,7 @@ export function AddBookmarkForm() {
         <div>
           <label
             htmlFor="description"
-            className="block text-sm font-medium text-gray-700 mb-1"
+            className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
           >
             Note (optional)
           </label>
@@ -96,7 +96,7 @@ export function AddBookmarkForm() {
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             disabled={loading}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-background dark:text-foreground rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
             rows={2}
           />
         </div>
@@ -104,7 +104,7 @@ export function AddBookmarkForm() {
         <div>
           <label
             htmlFor="tags"
-            className="block text-sm font-medium text-gray-700 mb-1"
+            className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
           >
             Tags (optional, comma-separated)
           </label>
@@ -119,8 +119,8 @@ export function AddBookmarkForm() {
         </div>
 
         {error && (
-          <div className="p-3 bg-red-50 border border-red-200 rounded-md">
-            <p className="text-sm text-red-700">{error}</p>
+          <div className="p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md">
+            <p className="text-sm text-red-700 dark:text-red-300">{error}</p>
           </div>
         )}
 
@@ -129,7 +129,7 @@ export function AddBookmarkForm() {
         </Button>
 
         {loading && (
-          <p className="text-sm text-gray-500 text-center">
+          <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
             Fetching content and analyzing with AI...
           </p>
         )}

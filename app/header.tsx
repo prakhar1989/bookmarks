@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useStackApp, useUser } from "@stackframe/stack";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 export function Header() {
   const user = useUser();
@@ -39,12 +40,14 @@ export function Header() {
                 {user.primaryEmail}
               </p>
             </div>
+            <ThemeToggle />
             <Button asChild size="sm" variant="outline">
               <Link href={app.urls.signOut}>Sign Out</Link>
             </Button>
           </div>
         ) : (
           <div className="flex items-center gap-2">
+            <ThemeToggle />
             <Button asChild size="sm" variant="ghost">
               <Link href={app.urls.signIn}>Sign In</Link>
             </Button>

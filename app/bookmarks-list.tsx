@@ -89,7 +89,9 @@ export function BookmarksList() {
         };
       });
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to delete bookmark");
+      setError(
+        err instanceof Error ? err.message : "Failed to delete bookmark",
+      );
     }
   };
 
@@ -97,7 +99,10 @@ export function BookmarksList() {
     return (
       <div className="space-y-4">
         {[1, 2, 3].map((i) => (
-          <div key={i} className="h-40 bg-gray-100 rounded-lg animate-pulse" />
+          <div
+            key={i}
+            className="h-40 bg-gray-100 dark:bg-gray-800 rounded-lg animate-pulse"
+          />
         ))}
       </div>
     );
@@ -105,16 +110,16 @@ export function BookmarksList() {
 
   if (error) {
     return (
-      <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
-        <p className="text-red-700">Error: {error}</p>
+      <div className="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+        <p className="text-red-700 dark:text-red-300">Error: {error}</p>
       </div>
     );
   }
 
   if (!data || data.bookmarks.length === 0) {
     return (
-      <div className="p-8 text-center bg-gray-50 rounded-lg border border-gray-200">
-        <p className="text-gray-600">
+      <div className="p-8 text-center bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+        <p className="text-gray-600 dark:text-gray-400">
           No bookmarks yet. Add your first one to get started!
         </p>
       </div>
@@ -132,7 +137,7 @@ export function BookmarksList() {
         <div className="flex justify-center gap-2 mt-6">
           <button
             disabled={data.page === 1}
-            className="px-4 py-2 bg-blue-600 text-white rounded-md disabled:bg-gray-300 disabled:cursor-not-allowed"
+            className="px-4 py-2 bg-blue-600 dark:bg-blue-500 text-white rounded-md disabled:bg-gray-300 dark:disabled:bg-gray-600 disabled:cursor-not-allowed"
             onClick={() => {
               const params = new URLSearchParams(searchParams.toString());
               params.set("page", String(data.page - 1));
@@ -146,7 +151,7 @@ export function BookmarksList() {
           </span>
           <button
             disabled={data.page === data.totalPages}
-            className="px-4 py-2 bg-blue-600 text-white rounded-md disabled:bg-gray-300 disabled:cursor-not-allowed"
+            className="px-4 py-2 bg-blue-600 dark:bg-blue-500 text-white rounded-md disabled:bg-gray-300 dark:disabled:bg-gray-600 disabled:cursor-not-allowed"
             onClick={() => {
               const params = new URLSearchParams(searchParams.toString());
               params.set("page", String(data.page + 1));
