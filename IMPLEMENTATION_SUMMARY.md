@@ -124,10 +124,6 @@ All API routes implemented with authentication and validation:
 As outlined in the design doc and README:
 
 - [ ] Background job processing for content extraction
-- [ ] Browser extension for quick saves
-- [ ] Collections/folders for organization
-- [ ] Bookmark sharing
-- [ ] Export functionality (JSON, HTML, Markdown)
 - [ ] Semantic search with pgvector
 - [ ] Dark mode
 - [ ] Rate limiting and quotas

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { neon } from "@neondatabase/serverless";
 import { drizzle } from "drizzle-orm/neon-http";
 import { and, eq } from "drizzle-orm";
+import type { Metadata } from "next";
 import * as schema from "@/app/schema/schema";
 import { Header } from "@/app/header";
 import { stackServerApp } from "@/app/stack";
@@ -108,6 +109,53 @@ async function getBookmark(
   }
 }
 
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const user = await stackServerApp.getUser();
+  const { id } = await params;
+
+  if (!user) {
+    return {
+      title: "Sign in required - Stashly",
+      description: "Sign in to view this bookmark on Stashly",
+    };
+  }
+
+  const bookmark = await getBookmark(id, user.id);
+
+  if (!bookmark) {
+    return {
+      title: "Bookmark not found - Stashly",
+      description: "This bookmark could not be found",
+    };
+  }
+
+  const title = bookmark.title || new URL(bookmark.url).hostname;
+  const description =
+    bookmark.summaryShort ||
+    bookmark.description ||
+    `Bookmark saved on Stashly from ${new URL(bookmark.url).hostname}`;
+
+  return {
+    title: `${title} - Stashly`,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: "website",
+      url: `/b/${id}`,
+    },
+    twitter: {
+      card: "summary",
+      title,
+      description,
+    },
+  };
+}
+
 export default async function BookmarkDetailPage({
   params,
 }: {
@@ -143,7 +191,7 @@ export default async function BookmarkDetailPage({
         <div className="flex items-center justify-between mb-6">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-blue-600 hover:underline"
+            className="inline-flex items-center gap-2 text-primary hover:underline"
           >
             <ArrowLeft className="w-4 h-4" />
             Back to bookmarks
@@ -172,7 +220,7 @@ export default async function BookmarkDetailPage({
                     href={bookmark.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-1 hover:text-blue-600"
+                    className="flex items-center gap-1 hover:text-primary"
                   >
                     {new URL(bookmark.url).hostname}
                     <ExternalLink className="w-3 h-3" />
@@ -206,7 +254,7 @@ export default async function BookmarkDetailPage({
                     {bookmark.tags.map((tag) => (
                       <span
                         key={tag.id}
-                        className="px-3 py-1 text-sm bg-blue-100 text-blue-700 rounded-md"
+                        className="px-3 py-1 text-sm bg-orange-100 text-orange-700 rounded-md"
                       >
                         {tag.name}
                       </span>
