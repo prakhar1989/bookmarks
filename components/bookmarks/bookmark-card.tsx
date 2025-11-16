@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import { Favicon } from "./favicon";
-import { ExternalLink, AlertCircle, Clock, CheckCircle } from "lucide-react";
+import { ExternalLink, AlertCircle, Clock, CheckCircle, Trash2 } from "lucide-react";
 
 interface Tag {
   id: string;
@@ -20,6 +20,7 @@ interface BookmarkCardProps {
   createdAt: Date | string;
   tags: Tag[];
   faviconUrl?: string | null;
+  onDelete?: (id: string) => void;
 }
 
 export function BookmarkCard({
@@ -32,6 +33,7 @@ export function BookmarkCard({
   createdAt,
   tags,
   faviconUrl,
+  onDelete,
 }: BookmarkCardProps) {
   const displayTitle = title || url;
   const displayUrl = new URL(url).hostname.replace("www.", "");
@@ -93,34 +95,53 @@ export function BookmarkCard({
           )}
 
           {/* Status and Date */}
-          <div className="flex items-center gap-3 mt-3 text-xs text-gray-500">
-            <div className="flex items-center gap-1">
-              {status === "processed" && (
-                <>
-                  <CheckCircle className="w-3 h-3 text-green-600" />
-                  <span className="text-green-600">Processed</span>
-                </>
-              )}
-              {status === "pending" && (
-                <>
-                  <Clock className="w-3 h-3 text-yellow-600" />
-                  <span className="text-yellow-600">Processing...</span>
-                </>
-              )}
-              {status === "failed" && (
-                <>
-                  <AlertCircle className="w-3 h-3 text-red-600" />
-                  <span className="text-red-600">Failed</span>
-                </>
-              )}
+          <div className="flex items-center justify-between mt-3 text-xs text-gray-500">
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-1">
+                {status === "processed" && (
+                  <>
+                    <CheckCircle className="w-3 h-3 text-green-600" />
+                    <span className="text-green-600">Processed</span>
+                  </>
+                )}
+                {status === "pending" && (
+                  <>
+                    <Clock className="w-3 h-3 text-yellow-600" />
+                    <span className="text-yellow-600">Processing...</span>
+                  </>
+                )}
+                {status === "failed" && (
+                  <>
+                    <AlertCircle className="w-3 h-3 text-red-600" />
+                    <span className="text-red-600">Failed</span>
+                  </>
+                )}
+              </div>
+              <span>
+                {new Date(createdAt).toLocaleDateString(undefined, {
+                  month: "short",
+                  day: "numeric",
+                  year: "numeric",
+                })}
+              </span>
             </div>
-            <span>
-              {new Date(createdAt).toLocaleDateString(undefined, {
-                month: "short",
-                day: "numeric",
-                year: "numeric",
-              })}
-            </span>
+
+            {/* Delete button */}
+            {onDelete && (
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  if (confirm("Are you sure you want to delete this bookmark?")) {
+                    onDelete(id);
+                  }
+                }}
+                className="p-1 hover:bg-red-50 rounded transition-colors group"
+                aria-label="Delete bookmark"
+              >
+                <Trash2 className="w-4 h-4 text-gray-400 group-hover:text-red-600" />
+              </button>
+            )}
           </div>
         </div>
       </div>

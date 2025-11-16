@@ -9,6 +9,7 @@ import { stackServerApp } from "@/app/stack";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Favicon } from "@/components/bookmarks/favicon";
+import { DeleteBookmarkButton } from "@/components/bookmarks/delete-bookmark-button";
 import {
   ArrowLeft,
   ExternalLink,
@@ -138,14 +139,17 @@ export default async function BookmarkDetailPage({
     <div className="flex flex-1 flex-col">
       <Header />
       <main className="mx-auto w-full flex-1 max-w-4xl px-4 py-10">
-        {/* Back Button */}
-        <Link
-          href="/"
-          className="inline-flex items-center gap-2 text-blue-600 hover:underline mb-6"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          Back to bookmarks
-        </Link>
+        {/* Back Button and Actions */}
+        <div className="flex items-center justify-between mb-6">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2 text-blue-600 hover:underline"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Back to bookmarks
+          </Link>
+          <DeleteBookmarkButton bookmarkId={bookmark.id} />
+        </div>
 
         <div className="space-y-6">
           {/* Header Card */}

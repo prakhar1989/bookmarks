@@ -69,6 +69,30 @@ export function BookmarksList() {
     fetchBookmarks();
   }, [searchParams]);
 
+  const handleDelete = async (id: string) => {
+    try {
+      const response = await fetch(`/api/bookmarks/${id}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to delete bookmark");
+      }
+
+      // Optimistically update UI by removing the bookmark
+      setData((prevData) => {
+        if (!prevData) return null;
+        return {
+          ...prevData,
+          bookmarks: prevData.bookmarks.filter((b) => b.id !== id),
+          total: prevData.total - 1,
+        };
+      });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to delete bookmark");
+    }
+  };
+
   if (loading) {
     return (
       <div className="space-y-4">
@@ -100,7 +124,7 @@ export function BookmarksList() {
   return (
     <div className="space-y-4">
       {data.bookmarks.map((bookmark) => (
-        <BookmarkCard key={bookmark.id} {...bookmark} />
+        <BookmarkCard key={bookmark.id} {...bookmark} onDelete={handleDelete} />
       ))}
 
       {/* Pagination */}
