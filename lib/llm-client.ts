@@ -16,7 +16,7 @@ const LLMResultSchema = z.object({
   language: z.string().describe("Detected language code (e.g., 'en', 'ja')"),
   tags: z
     .array(z.string())
-    .describe("Array of relevant tags describing topic, domain, and use-case"),
+    .describe("Array of relevant tags (max 5) describing topic, domain, and use-case"),
   category: z.string().describe("Primary category of the content").optional(),
 });
 
@@ -120,8 +120,7 @@ Analyze this content and provide a JSON response with the following fields:
         config: {
           responseMimeType: "application/json",
           responseSchema,
-          temperature: 0.3,
-          maxOutputTokens: 1000,
+          maxOutputTokens: 4000,
         },
       });
 

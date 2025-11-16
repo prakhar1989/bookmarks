@@ -65,8 +65,8 @@ export function SearchFilter({ tags }: SearchFilterProps) {
             onClick={() => setSelectedTag("")}
             className={`px-3 py-1 text-sm rounded-md transition-colors ${
               selectedTag === ""
-                ? "bg-blue-600 text-white"
-                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                ? "bg-primary text-primary-foreground"
+                : "bg-orange-100 text-orange-700 hover:bg-orange-200"
             }`}
           >
             All Tags
@@ -77,8 +77,8 @@ export function SearchFilter({ tags }: SearchFilterProps) {
               onClick={() => setSelectedTag(tag.name)}
               className={`px-3 py-1 text-sm rounded-md transition-colors ${
                 selectedTag === tag.name
-                  ? "bg-blue-600 text-white"
-                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-orange-100 text-orange-700 hover:bg-orange-200"
               }`}
             >
               {tag.name} ({tag.bookmarkCount})

@@ -86,7 +86,7 @@ export function BookmarkCard({
               {tags.map((tag) => (
                 <span
                   key={tag.id}
-                  className="px-2 py-1 text-xs bg-blue-100 text-blue-700 rounded-md"
+                  className="px-2 py-1 text-xs bg-orange-100 text-orange-700 rounded-md"
                 >
                   {tag.name}
                 </span>
