@@ -1,9 +1,10 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import { Favicon } from "./favicon";
-import { ExternalLink, AlertCircle, Clock, CheckCircle, Trash2 } from "lucide-react";
+import { ExternalLink, AlertCircle, Clock, CheckCircle, Trash2, Share2, Check } from "lucide-react";
 
 interface Tag {
   id: string;
@@ -35,8 +36,23 @@ export function BookmarkCard({
   faviconUrl,
   onDelete,
 }: BookmarkCardProps) {
+  const [copied, setCopied] = useState(false);
   const displayTitle = title || url;
   const displayUrl = new URL(url).hostname.replace("www.", "");
+
+  const handleShare = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const bookmarkUrl = `${window.location.origin}/b/${id}`;
+
+    try {
+      await navigator.clipboard.writeText(bookmarkUrl);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error("Failed to copy to clipboard:", err);
+    }
+  };
 
   return (
     <Card className="p-4 hover:shadow-md transition-shadow">
@@ -126,22 +142,38 @@ export function BookmarkCard({
               </span>
             </div>
 
-            {/* Delete button */}
-            {onDelete && (
+            {/* Share and Delete buttons */}
+            <div className="flex items-center gap-1">
+              {/* Share button */}
               <button
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  if (confirm("Are you sure you want to delete this bookmark?")) {
-                    onDelete(id);
-                  }
-                }}
-                className="p-1 hover:bg-red-50 rounded transition-colors group"
-                aria-label="Delete bookmark"
+                onClick={handleShare}
+                className="p-1 hover:bg-orange-50 rounded transition-colors group"
+                aria-label="Share bookmark"
               >
-                <Trash2 className="w-4 h-4 text-gray-400 group-hover:text-red-600" />
+                {copied ? (
+                  <Check className="w-4 h-4 text-green-600" />
+                ) : (
+                  <Share2 className="w-4 h-4 text-gray-400 group-hover:text-orange-600" />
+                )}
               </button>
-            )}
+
+              {/* Delete button */}
+              {onDelete && (
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (confirm("Are you sure you want to delete this bookmark?")) {
+                      onDelete(id);
+                    }
+                  }}
+                  className="p-1 hover:bg-red-50 rounded transition-colors group"
+                  aria-label="Delete bookmark"
+                >
+                  <Trash2 className="w-4 h-4 text-gray-400 group-hover:text-red-600" />
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </div>
