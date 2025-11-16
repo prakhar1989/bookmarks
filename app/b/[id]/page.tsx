@@ -206,7 +206,7 @@ export default async function BookmarkDetailPage({
               {bookmark.faviconUrl && (
                 <Favicon
                   src={bookmark.faviconUrl}
-                  className="w-8 h-8 flex-shrink-0"
+                  className="w-8 h-8 shrink-0"
                 />
               )}
 
@@ -268,7 +268,9 @@ export default async function BookmarkDetailPage({
                     <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                       Your Note:
                     </p>
-                    <p className="text-gray-900 dark:text-gray-100">{bookmark.description}</p>
+                    <p className="text-gray-900 dark:text-gray-100">
+                      {bookmark.description}
+                    </p>
                   </div>
                 )}
               </div>
@@ -279,7 +281,7 @@ export default async function BookmarkDetailPage({
           {bookmark.status === "failed" && bookmark.errorMessage && (
             <Card className="p-4 bg-red-50 border-red-200">
               <div className="flex items-start gap-3">
-                <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                <AlertCircle className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
                 <div className="flex-1">
                   <p className="font-medium text-red-900 mb-1">
                     Processing Failed
@@ -307,7 +309,9 @@ export default async function BookmarkDetailPage({
           {bookmark.summaryShort && (
             <Card className="p-6">
               <h2 className="text-lg font-semibold mb-3">Summary</h2>
-              <p className="text-gray-700 dark:text-gray-300">{bookmark.summaryShort}</p>
+              <p className="text-gray-700 dark:text-gray-300">
+                {bookmark.summaryShort}
+              </p>
             </Card>
           )}
 
@@ -327,14 +331,18 @@ export default async function BookmarkDetailPage({
             <h2 className="text-lg font-semibold mb-3">Metadata</h2>
             <dl className="grid grid-cols-2 gap-4 text-sm">
               <div>
-                <dt className="text-gray-600 dark:text-gray-400 mb-1">Created</dt>
+                <dt className="text-gray-600 dark:text-gray-400 mb-1">
+                  Created
+                </dt>
                 <dd className="font-medium">
                   {new Date(bookmark.createdAt).toLocaleString()}
                 </dd>
               </div>
               {bookmark.lastProcessedAt && (
                 <div>
-                  <dt className="text-gray-600 dark:text-gray-400 mb-1">Last Processed</dt>
+                  <dt className="text-gray-600 dark:text-gray-400 mb-1">
+                    Last Processed
+                  </dt>
                   <dd className="font-medium">
                     {new Date(bookmark.lastProcessedAt).toLocaleString()}
                   </dd>
@@ -342,22 +350,20 @@ export default async function BookmarkDetailPage({
               )}
               {bookmark.language && (
                 <div>
-                  <dt className="text-gray-600 dark:text-gray-400 mb-1">Language</dt>
+                  <dt className="text-gray-600 dark:text-gray-400 mb-1">
+                    Language
+                  </dt>
                   <dd className="font-medium uppercase">{bookmark.language}</dd>
                 </div>
               )}
               {bookmark.sourceType && (
                 <div>
-                  <dt className="text-gray-600 dark:text-gray-400 mb-1">Type</dt>
+                  <dt className="text-gray-600 dark:text-gray-400 mb-1">
+                    Type
+                  </dt>
                   <dd className="font-medium capitalize">
                     {bookmark.sourceType}
                   </dd>
-                </div>
-              )}
-              {bookmark.llmModel && (
-                <div>
-                  <dt className="text-gray-600 dark:text-gray-400 mb-1">AI Model</dt>
-                  <dd className="font-medium">{bookmark.llmModel}</dd>
                 </div>
               )}
             </dl>

@@ -120,16 +120,8 @@ export function BookmarkCard({
 
           {/* Status and Date */}
           <div className="flex items-center justify-between mt-3 text-xs text-gray-500 dark:text-gray-400">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center">
               <div className="flex items-center gap-1">
-                {status === "processed" && (
-                  <>
-                    <CheckCircle className="w-3 h-3 text-green-600 dark:text-green-400" />
-                    <span className="text-green-600 dark:text-green-400">
-                      Processed
-                    </span>
-                  </>
-                )}
                 {status === "pending" && (
                   <>
                     <Clock className="w-3 h-3 text-yellow-600 dark:text-yellow-400" />
