@@ -1,9 +1,11 @@
+"use client";
+
 import { Header } from "app/header";
-import { stackServerApp } from "app/stack";
+import { useUser } from "@stackframe/stack";
 import { BookmarksPage } from "./bookmarks-page";
 
-export default async function Home() {
-  const user = await stackServerApp.getUser();
+export default function Home() {
+  const user = useUser();
 
   let content = null;
   if (user) {
@@ -19,7 +21,7 @@ export default async function Home() {
             Sign in to start organizing your bookmarks.
           </h1>
           <p className="mt-4 text-base text-muted-foreground">
-            Once you&apos;re authenticated you can save links, automatically
+            Save links, automatically
             extract content, and search with AI-powered summaries and tags.
           </p>
         </div>
