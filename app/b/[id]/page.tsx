@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Favicon } from "@/components/bookmarks/favicon";
 import { DeleteBookmarkButton } from "@/components/bookmarks/delete-bookmark-button";
+import { TagManager } from "@/components/bookmarks/tag-manager";
 import {
   ArrowLeft,
   ExternalLink,
@@ -201,18 +202,12 @@ export default async function BookmarkDetailPage({
                 </div>
 
                 {/* Tags */}
-                {bookmark.tags.length > 0 && (
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {bookmark.tags.map((tag) => (
-                      <span
-                        key={tag.id}
-                        className="px-3 py-1 text-sm bg-blue-100 text-blue-700 rounded-md"
-                      >
-                        {tag.name}
-                      </span>
-                    ))}
-                  </div>
-                )}
+                <div className="mb-4">
+                  <TagManager
+                    bookmarkId={bookmark.id}
+                    initialTags={bookmark.tags}
+                  />
+                </div>
 
                 {/* Personal Note */}
                 {bookmark.description && (
