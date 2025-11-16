@@ -61,14 +61,16 @@ export function AddBookmarkForm() {
   };
 
   return (
-    <Card className="p-6">
-      <h2 className="text-xl font-semibold mb-4">Add New Bookmark</h2>
+    <Card className="p-8 glass shadow-xl shadow-primary/10 animate-fade-in-up stagger-2">
+      <h2 className="text-2xl font-bold mb-6 tracking-tight">
+        Add New Bookmark
+      </h2>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-5">
         <div>
           <label
             htmlFor="url"
-            className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+            className="block text-sm font-mono font-semibold text-foreground mb-2 uppercase tracking-wider"
           >
             URL *
           </label>
@@ -80,13 +82,14 @@ export function AddBookmarkForm() {
             onChange={(e) => setUrl(e.target.value)}
             disabled={loading}
             required
+            className="transition-all duration-300 focus:scale-[1.02] focus:shadow-lg"
           />
         </div>
 
         <div>
           <label
             htmlFor="description"
-            className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+            className="block text-sm font-mono font-semibold text-foreground mb-2 uppercase tracking-wider"
           >
             Note (optional)
           </label>
@@ -96,15 +99,15 @@ export function AddBookmarkForm() {
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             disabled={loading}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-background dark:text-foreground rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
-            rows={2}
+            className="w-full px-4 py-3 border border-input bg-background text-foreground rounded-lg focus:outline-none focus:ring-2 focus:ring-ring transition-all duration-300 focus:scale-[1.02] focus:shadow-lg"
+            rows={3}
           />
         </div>
 
         <div>
           <label
             htmlFor="tags"
-            className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+            className="block text-sm font-mono font-semibold text-foreground mb-2 uppercase tracking-wider"
           >
             Tags (optional, comma-separated)
           </label>
@@ -115,21 +118,26 @@ export function AddBookmarkForm() {
             value={tags}
             onChange={(e) => setTags(e.target.value)}
             disabled={loading}
+            className="font-mono transition-all duration-300 focus:scale-[1.02] focus:shadow-lg"
           />
         </div>
 
         {error && (
-          <div className="p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md">
-            <p className="text-sm text-red-700 dark:text-red-300">{error}</p>
+          <div className="p-4 bg-destructive/10 border border-destructive/30 rounded-lg animate-scale-in">
+            <p className="text-sm text-destructive font-medium">{error}</p>
           </div>
         )}
 
-        <Button type="submit" disabled={loading} className="w-full">
+        <Button
+          type="submit"
+          disabled={loading}
+          className="w-full transition-all duration-300 hover:scale-105 hover:shadow-xl font-semibold text-base py-6"
+        >
           {loading ? "Analyzing..." : "Add Bookmark"}
         </Button>
 
         {loading && (
-          <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
+          <p className="text-sm text-muted-foreground text-center font-mono animate-pulse">
             Fetching content and analyzing with AI...
           </p>
         )}

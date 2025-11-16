@@ -45,43 +45,45 @@ export function SearchFilter({ tags }: SearchFilterProps) {
   }, [searchQuery, selectedTag, router, searchParams]);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6 animate-fade-in-up">
       {/* Search Bar */}
-      <div className="relative">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-gray-500" />
+      <div className="relative group">
+        <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground transition-all duration-300 group-focus-within:text-primary group-focus-within:scale-110" />
         <Input
           type="text"
           placeholder="Search bookmarks..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="pl-10"
+          className="pl-12 h-14 text-base glass transition-all duration-300 focus:scale-[1.02] focus:shadow-xl"
         />
       </div>
 
       {/* Tag Filter */}
       {tags.length > 0 && (
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2.5">
           <button
             onClick={() => setSelectedTag("")}
-            className={`px-3 py-1 text-sm rounded-md transition-colors ${
+            className={`px-4 py-2 text-sm font-mono font-semibold rounded-lg transition-all duration-300 hover:scale-105 ${
               selectedTag === ""
-                ? "bg-primary text-primary-foreground"
-                : "bg-orange-100 text-orange-700 hover:bg-orange-200 dark:bg-orange-900/30 dark:text-orange-300 dark:hover:bg-orange-900/50"
+                ? "bg-primary text-primary-foreground shadow-lg shadow-primary/30"
+                : "bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20"
             }`}
           >
             All Tags
           </button>
-          {tags.slice(0, 20).map((tag) => (
+          {tags.slice(0, 20).map((tag, index) => (
             <button
               key={tag.id}
               onClick={() => setSelectedTag(tag.name)}
-              className={`px-3 py-1 text-sm rounded-md transition-colors ${
+              className={`px-4 py-2 text-sm font-mono font-semibold rounded-lg hover:scale-105 ${
                 selectedTag === tag.name
-                  ? "bg-primary text-primary-foreground"
-                  : "bg-orange-100 text-orange-700 hover:bg-orange-200 dark:bg-orange-900/30 dark:text-orange-300 dark:hover:bg-orange-900/50"
+                  ? "bg-primary text-primary-foreground shadow-lg shadow-primary/30"
+                  : "bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20"
               }`}
+              style={{ animationDelay: `${0.1 + index * 0.05}s` }}
             >
-              {tag.name} ({tag.bookmarkCount})
+              {tag.name}{" "}
+              <span className="opacity-70">({tag.bookmarkCount})</span>
             </button>
           ))}
         </div>
