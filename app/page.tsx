@@ -17,7 +17,7 @@ export default function Home() {
           <p className="text-sm uppercase tracking-[0.35em] text-muted-foreground font-mono font-light animate-fade-in-up">
             Welcome
           </p>
-          <h1 className="mt-6 text-6xl font-black text-foreground leading-tight animate-fade-in-up stagger-1">
+          <h1 className="mt-6 text-4xl font-black text-foreground leading-tight animate-fade-in-up stagger-1">
             Sign in to start organizing your bookmarks.
           </h1>
           <p className="mt-8 text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto animate-fade-in-up stagger-2">
