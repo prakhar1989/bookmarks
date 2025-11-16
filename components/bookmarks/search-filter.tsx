@@ -52,7 +52,7 @@ export function SearchFilter({ tags }: SearchFilterProps) {
         <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground transition-all duration-300 group-focus-within:text-primary group-focus-within:scale-110" />
         <Input
           type="text"
-          placeholder="Search bookmarks..."
+          placeholder="Search your stash..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           className="pl-12 h-14 text-base glass transition-all duration-300 focus:scale-[1.02] focus:shadow-xl"

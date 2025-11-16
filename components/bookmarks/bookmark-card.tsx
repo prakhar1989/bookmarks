@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Card } from "@/components/ui/card";
 import { Favicon } from "./favicon";
 import { Tag } from "./tag";
@@ -45,9 +46,14 @@ export function BookmarkCard({
   faviconUrl,
   onDelete,
 }: BookmarkCardProps) {
+  const router = useRouter();
   const [copied, setCopied] = useState(false);
   const displayTitle = title || url;
   const displayUrl = new URL(url).hostname.replace("www.", "");
+
+  const handleTagClick = (tagName: string) => {
+    router.push(`/?tag=${encodeURIComponent(tagName)}`);
+  };
 
   const handleShare = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -109,7 +115,11 @@ export function BookmarkCard({
           {tags.length > 0 && (
             <div className="flex flex-wrap gap-2 mt-4">
               {tags.map((tag) => (
-                <Tag key={tag.id} name={tag.name} />
+                <Tag
+                  key={tag.id}
+                  name={tag.name}
+                  onClick={() => handleTagClick(tag.name)}
+                />
               ))}
             </div>
           )}

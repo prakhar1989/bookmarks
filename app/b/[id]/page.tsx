@@ -13,7 +13,7 @@ import { DeleteBookmarkButton } from "@/components/bookmarks/delete-bookmark-but
 import { EditNote } from "@/components/bookmarks/edit-note";
 import { EditSummary } from "@/components/bookmarks/edit-summary";
 import { ReprocessButton } from "@/components/bookmarks/reprocess-button";
-import { Tag } from "@/components/bookmarks/tag";
+import { ClickableTags } from "@/components/bookmarks/clickable-tags";
 import {
   ArrowLeft,
   ExternalLink,
@@ -254,13 +254,7 @@ export default async function BookmarkDetailPage({
                 </div>
 
                 {/* Tags */}
-                {bookmark.tags.length > 0 && (
-                  <div className="flex flex-wrap gap-2.5 mb-4">
-                    {bookmark.tags.map((tag) => (
-                      <Tag key={tag.id} name={tag.name} />
-                    ))}
-                  </div>
-                )}
+                <ClickableTags tags={bookmark.tags} />
 
                 {/* Personal Note */}
                 <EditNote
