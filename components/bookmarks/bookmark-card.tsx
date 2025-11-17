@@ -126,7 +126,7 @@ export function BookmarkCard({
 
           {/* Status and Date */}
           <div className="flex items-center justify-between mt-5 text-sm text-muted-foreground">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center">
               <div className="flex items-center gap-1.5">
                 {status === "pending" && (
                   <>
