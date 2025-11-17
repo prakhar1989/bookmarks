@@ -279,44 +279,44 @@ export default async function BookmarkDetailPage({
             </Card>
           )}
 
-          {/* Summaries - Replace EditSummary with plain display for guests */}
+          {/* Summaries */}
           {bookmark.summaryShort && (
             <Card className="p-6">
-              <div className="space-y-3">
-                <h2 className="text-lg font-semibold">Summary</h2>
-                {isOwner ? (
-                  <EditSummary
-                    bookmarkId={bookmark.id}
-                    initialSummary={bookmark.summaryShort}
-                    type="short"
-                    title="Summary"
-                  />
-                ) : (
+              {isOwner ? (
+                <EditSummary
+                  bookmarkId={bookmark.id}
+                  initialSummary={bookmark.summaryShort}
+                  type="short"
+                  title="Summary"
+                />
+              ) : (
+                <div className="space-y-3">
+                  <h2 className="text-lg font-semibold">Summary</h2>
                   <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
                     {bookmark.summaryShort}
                   </p>
-                )}
-              </div>
+                </div>
+              )}
             </Card>
           )}
 
           {bookmark.summaryLong && (
             <Card className="p-6">
-              <div className="space-y-3">
-                <h2 className="text-lg font-semibold">Detailed Summary</h2>
-                {isOwner ? (
-                  <EditSummary
-                    bookmarkId={bookmark.id}
-                    initialSummary={bookmark.summaryLong}
-                    type="long"
-                    title="Detailed Summary"
-                  />
-                ) : (
+              {isOwner ? (
+                <EditSummary
+                  bookmarkId={bookmark.id}
+                  initialSummary={bookmark.summaryLong}
+                  type="long"
+                  title="Detailed Summary"
+                />
+              ) : (
+                <div className="space-y-3">
+                  <h2 className="text-lg font-semibold">Detailed Summary</h2>
                   <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
                     {bookmark.summaryLong}
                   </p>
-                )}
-              </div>
+                </div>
+              )}
             </Card>
           )}
 
