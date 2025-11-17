@@ -45,11 +45,12 @@ interface Bookmark {
   language: string | null;
   llmModel: string | null;
   tags: TagData[];
+  userId?: string;
 }
 
 async function getBookmark(
   id: string,
-  userId: string,
+  userId?: string,
 ): Promise<Bookmark | null> {
   try {
     const db = drizzle(neon(process.env.DATABASE_URL!), { schema });
@@ -73,6 +74,7 @@ async function getBookmark(
         summaryLong: schema.bookmarkContents.summaryLong,
         language: schema.bookmarkContents.language,
         llmModel: schema.bookmarkContents.llmModel,
+        userId: schema.bookmarks.userId,
       })
       .from(schema.bookmarks)
       .leftJoin(
@@ -80,13 +82,17 @@ async function getBookmark(
         eq(schema.bookmarks.id, schema.bookmarkContents.bookmarkId),
       )
       .where(
-        and(eq(schema.bookmarks.id, id), eq(schema.bookmarks.userId, userId)),
+        userId
+          ? and(eq(schema.bookmarks.id, id), eq(schema.bookmarks.userId, userId))
+          : eq(schema.bookmarks.id, id),
       )
       .limit(1);
 
     if (bookmarks.length === 0) {
       return null;
     }
+
+    const bookmark = bookmarks[0];
 
     // Fetch tags
     const tags = await db
@@ -102,7 +108,7 @@ async function getBookmark(
       .where(eq(schema.bookmarkTags.bookmarkId, id));
 
     return {
-      ...bookmarks[0],
+      ...bookmark,
       tags,
     };
   } catch (error) {
@@ -116,17 +122,11 @@ export async function generateMetadata({
 }: {
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
-  const user = await stackServerApp.getUser();
   const { id } = await params;
 
-  if (!user) {
-    return {
-      title: "Sign in required - Stashly",
-      description: "Sign in to view this bookmark on Stashly",
-    };
-  }
-
-  const bookmark = await getBookmark(id, user.id);
+  // Try to get user, but don't require it
+  const user = await stackServerApp.getUser().catch(() => null);
+  const bookmark = await getBookmark(id, user?.id);
 
   if (!bookmark) {
     return {
@@ -163,27 +163,17 @@ export default async function BookmarkDetailPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const user = await stackServerApp.getUser();
-
-  if (!user) {
-    return (
-      <div className="flex flex-1 flex-col">
-        <Header />
-        <main className="mx-auto w-full flex-1 max-w-3xl px-4 py-16">
-          <p className="text-center text-gray-600 dark:text-gray-400">
-            Please sign in to view bookmarks.
-          </p>
-        </main>
-      </div>
-    );
-  }
-
   const { id } = await params;
-  const bookmark = await getBookmark(id, user.id);
+
+  // Try to get user, but don't require it
+  const user = await stackServerApp.getUser().catch(() => null);
+  const bookmark = await getBookmark(id, user?.id);
 
   if (!bookmark) {
     notFound();
   }
+
+  const isOwner = user ? bookmark.userId === user.id : false;
 
   return (
     <div className="flex flex-1 flex-col">
@@ -198,10 +188,12 @@ export default async function BookmarkDetailPage({
             <ArrowLeft className="w-4 h-4" />
             Back
           </Link>
-          <div className="flex gap-2">
-            <ReprocessButton bookmarkId={bookmark.id} />
-            <DeleteBookmarkButton bookmarkId={bookmark.id} />
-          </div>
+          {isOwner && (
+            <div className="flex gap-2">
+              <ReprocessButton bookmarkId={bookmark.id} />
+              <DeleteBookmarkButton bookmarkId={bookmark.id} />
+            </div>
+          )}
         </div>
 
         <div className="space-y-6">
@@ -256,11 +248,13 @@ export default async function BookmarkDetailPage({
                 {/* Tags */}
                 <ClickableTags tags={bookmark.tags} />
 
-                {/* Personal Note */}
-                <EditNote
-                  bookmarkId={bookmark.id}
-                  initialNote={bookmark.description}
-                />
+                {/* Personal Note - Only show for owner */}
+                {isOwner && (
+                  <EditNote
+                    bookmarkId={bookmark.id}
+                    initialNote={bookmark.description}
+                  />
+                )}
               </div>
             </div>
           </Card>
@@ -285,26 +279,44 @@ export default async function BookmarkDetailPage({
             </Card>
           )}
 
-          {/* Summaries */}
+          {/* Summaries - Replace EditSummary with plain display for guests */}
           {bookmark.summaryShort && (
             <Card className="p-6">
-              <EditSummary
-                bookmarkId={bookmark.id}
-                initialSummary={bookmark.summaryShort}
-                type="short"
-                title="Summary"
-              />
+              <div className="space-y-3">
+                <h2 className="text-lg font-semibold">Summary</h2>
+                {isOwner ? (
+                  <EditSummary
+                    bookmarkId={bookmark.id}
+                    initialSummary={bookmark.summaryShort}
+                    type="short"
+                    title="Summary"
+                  />
+                ) : (
+                  <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                    {bookmark.summaryShort}
+                  </p>
+                )}
+              </div>
             </Card>
           )}
 
           {bookmark.summaryLong && (
             <Card className="p-6">
-              <EditSummary
-                bookmarkId={bookmark.id}
-                initialSummary={bookmark.summaryLong}
-                type="long"
-                title="Detailed Summary"
-              />
+              <div className="space-y-3">
+                <h2 className="text-lg font-semibold">Detailed Summary</h2>
+                {isOwner ? (
+                  <EditSummary
+                    bookmarkId={bookmark.id}
+                    initialSummary={bookmark.summaryLong}
+                    type="long"
+                    title="Detailed Summary"
+                  />
+                ) : (
+                  <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                    {bookmark.summaryLong}
+                  </p>
+                )}
+              </div>
             </Card>
           )}
 
