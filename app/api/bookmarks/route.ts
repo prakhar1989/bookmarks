@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { neon } from "@neondatabase/serverless";
 import { drizzle } from "drizzle-orm/neon-http";
-import { and, desc, eq, ilike, or, sql } from "drizzle-orm";
+import { and, desc, eq, ilike, or, sql, inArray } from "drizzle-orm";
 import * as schema from "@/app/schema/schema";
 import { stackServerApp } from "@/app/stack";
 import {
@@ -280,27 +280,44 @@ export async function GET(request: NextRequest) {
       .limit(pageSize)
       .offset((page - 1) * pageSize);
 
-    // Fetch tags for each bookmark
-    const bookmarksWithTags = await Promise.all(
-      bookmarks.map(async (bookmark) => {
-        const tags = await db
-          .select({
-            id: schema.tags.id,
-            name: schema.tags.name,
-          })
-          .from(schema.tags)
-          .innerJoin(
-            schema.bookmarkTags,
-            eq(schema.tags.id, schema.bookmarkTags.tagId),
-          )
-          .where(eq(schema.bookmarkTags.bookmarkId, bookmark.id));
+    // Fetch tags for all bookmarks in a single query (fixes N+1 problem)
+    const bookmarkIds = bookmarks.map((b) => b.id);
+    const allTags =
+      bookmarkIds.length > 0
+        ? await db
+            .select({
+              bookmarkId: schema.bookmarkTags.bookmarkId,
+              tagId: schema.tags.id,
+              tagName: schema.tags.name,
+            })
+            .from(schema.tags)
+            .innerJoin(
+              schema.bookmarkTags,
+              eq(schema.tags.id, schema.bookmarkTags.tagId),
+            )
+            .where(inArray(schema.bookmarkTags.bookmarkId, bookmarkIds))
+        : [];
 
-        return {
-          ...bookmark,
-          tags,
-        };
-      }),
+    // Group tags by bookmark ID in memory
+    const tagsByBookmark = allTags.reduce(
+      (acc, tag) => {
+        if (!acc[tag.bookmarkId]) {
+          acc[tag.bookmarkId] = [];
+        }
+        acc[tag.bookmarkId].push({
+          id: tag.tagId,
+          name: tag.tagName,
+        });
+        return acc;
+      },
+      {} as Record<string, { id: string; name: string }[]>,
     );
+
+    // Attach tags to bookmarks
+    const bookmarksWithTags = bookmarks.map((bookmark) => ({
+      ...bookmark,
+      tags: tagsByBookmark[bookmark.id] || [],
+    }));
 
     return NextResponse.json({
       bookmarks: bookmarksWithTags,
