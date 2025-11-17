@@ -112,22 +112,33 @@ export async function ensureTags(
 
 /**
  * Links tags to a bookmark
- * Removes existing tag associations and creates new ones
+ * Merges new tags with existing ones, preserving user-provided tags
  */
 export async function updateBookmarkTags(
   db: NeonHttpDatabase<typeof schema>,
   bookmarkId: string,
   tagIds: string[],
 ): Promise<void> {
-  // Remove existing associations
+  // Get existing tag associations for this bookmark
+  const existingAssociations = await db
+    .select({ tagId: schema.bookmarkTags.tagId })
+    .from(schema.bookmarkTags)
+    .where(eq(schema.bookmarkTags.bookmarkId, bookmarkId));
+
+  const existingTagIds = existingAssociations.map((assoc) => assoc.tagId);
+
+  // Merge existing tags with new tags, removing duplicates
+  const allTagIds = [...new Set([...existingTagIds, ...tagIds])];
+
+  // Replace all associations with the merged set
   await db
     .delete(schema.bookmarkTags)
     .where(eq(schema.bookmarkTags.bookmarkId, bookmarkId));
 
-  // Create new associations
-  if (tagIds.length > 0) {
+  // Create merged associations
+  if (allTagIds.length > 0) {
     await db.insert(schema.bookmarkTags).values(
-      tagIds.map((tagId) => ({
+      allTagIds.map((tagId) => ({
         bookmarkId,
         tagId,
       })),

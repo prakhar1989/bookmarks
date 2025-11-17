@@ -95,7 +95,7 @@ export function AddBookmarkForm() {
           </label>
           <textarea
             id="description"
-            placeholder="Add a personal note about this bookmark..."
+            placeholder="Add a personal note..."
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             disabled={loading}
