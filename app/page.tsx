@@ -16,7 +16,7 @@ export default function Home() {
   } else {
     content = (
       <main className="mx-auto w-full flex-1 max-w-4xl px-4 py-24">
-        <div className="glass rounded-3xl px-12 py-20 text-center shadow-2xl shadow-primary/10 animate-scale-in">
+        <div className="rounded-3xl px-12 py-20 text-center shadow-2xl shadow-primary/10 animate-scale-in">
           <p className="text-sm uppercase tracking-[0.35em] text-muted-foreground font-mono font-light animate-fade-in-up">
             Welcome
           </p>

@@ -71,7 +71,7 @@ export function BookmarkCard({
   };
 
   return (
-    <Card className="p-6 glass transition-all duration-500 hover:shadow-2xl hover:shadow-primary/20 hover:scale-[1.02] hover:-translate-y-1 group animate-fade-in-up">
+    <Card className="p-6 transition-all duration-500 hover:shadow-2xl hover:shadow-primary/20 hover:scale-[1.02] hover:-translate-y-1 group animate-fade-in-up">
       <div className="flex items-start gap-4">
         {/* Favicon */}
         <div className="flex-shrink-0 mt-1.5 transition-transform duration-300 group-hover:scale-110">

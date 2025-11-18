@@ -70,7 +70,7 @@ export function AddBookmarkForm({ onSuccess }: AddBookmarkFormProps) {
   };
 
   return (
-    <Card className="p-8 glass shadow-xl shadow-primary/10 animate-fade-in-up stagger-2">
+    <Card className="p-8 shadow-xl shadow-primary/10 animate-fade-in-up stagger-2">
       <h2 className="text-2xl font-bold mb-6 tracking-tight">
         Add New Bookmark
       </h2>

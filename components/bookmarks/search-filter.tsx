@@ -61,7 +61,7 @@ export function SearchFilter({ tags }: SearchFilterProps) {
           placeholder="Search... (github.com, agents, etc.)"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="px-8 h-14 text-base glass transition-all duration-300 focus:scale-[1.02] focus:shadow-xl"
+          className="px-8 h-14 text-base transition-all duration-300 focus:scale-[1.02] focus:shadow-xl"
         />
         {searchQuery && (
           <button
