@@ -6,7 +6,11 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 
-export function AddBookmarkForm() {
+interface AddBookmarkFormProps {
+  onSuccess?: () => void;
+}
+
+export function AddBookmarkForm({ onSuccess }: AddBookmarkFormProps) {
   const router = useRouter();
   const [url, setUrl] = useState("");
   const [description, setDescription] = useState("");
@@ -53,6 +57,11 @@ export function AddBookmarkForm() {
 
       // Refresh the page to show the new bookmark
       router.refresh();
+
+      // Close modal if onSuccess callback is provided
+      if (onSuccess) {
+        onSuccess();
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Unknown error");
     } finally {
