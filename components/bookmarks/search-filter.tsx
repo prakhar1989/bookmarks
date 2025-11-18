@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
+import { Search, X } from "lucide-react";
 import { Tag } from "@/components/bookmarks/tag";
 
 interface TagData {
@@ -47,6 +47,10 @@ export function SearchFilter({ tags }: SearchFilterProps) {
     return () => clearTimeout(timer);
   }, [searchQuery, selectedTag, router, searchParams]);
 
+  const clearSearch = () => {
+    setSearchQuery("");
+  };
+
   return (
     <div className="space-y-6 animate-fade-in-up">
       {/* Search Bar */}
@@ -57,8 +61,17 @@ export function SearchFilter({ tags }: SearchFilterProps) {
           placeholder="Search your stash..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="pl-12 h-14 text-base glass transition-all duration-300 focus:scale-[1.02] focus:shadow-xl"
+          className="pl-12 pr-12 h-14 text-base glass transition-all duration-300 focus:scale-[1.02] focus:shadow-xl"
         />
+        {searchQuery && (
+          <button
+            onClick={clearSearch}
+            className="absolute right-4 top-1/2 transform -translate-y-1/2 p-1 rounded-full hover:bg-muted transition-all duration-200 group-focus-within:scale-110"
+            aria-label="Clear search"
+          >
+            <X className="w-4 h-4 text-muted-foreground hover:text-foreground" />
+          </button>
+        )}
       </div>
 
       {/* Tag Filter */}
