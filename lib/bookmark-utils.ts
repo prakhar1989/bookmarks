@@ -148,7 +148,7 @@ export async function updateBookmarkTags(
 
 /**
  * Updates the full-text search vector for a bookmark
- * Combines title, description, and summary fields with different weights
+ * Combines title, URL, description, and summary fields with different weights
  */
 export async function updateSearchVector(
   db: NeonHttpDatabase<typeof schema>,
@@ -160,7 +160,8 @@ export async function updateSearchVector(
       setweight(to_tsvector('simple', coalesce(b.title, '')), 'A') ||
       setweight(to_tsvector('simple', coalesce(b.description, '')), 'B') ||
       setweight(to_tsvector('simple', coalesce(bc.summary_short, '')), 'B') ||
-      setweight(to_tsvector('simple', coalesce(bc.summary_long, '')), 'C')
+      setweight(to_tsvector('simple', coalesce(bc.summary_long, '')), 'C') ||
+      setweight(to_tsvector('simple', coalesce(b.url, '')), 'C')
     )
     FROM ${schema.bookmarks} b
     WHERE bc.bookmark_id = ${bookmarkId}
