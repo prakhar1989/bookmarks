@@ -140,7 +140,10 @@ export async function PATCH(
           updatedAt: new Date(),
         })
         .where(
-          and(eq(schema.bookmarks.id, id), eq(schema.bookmarks.userId, user.id)),
+          and(
+            eq(schema.bookmarks.id, id),
+            eq(schema.bookmarks.userId, user.id),
+          ),
         );
     }
 

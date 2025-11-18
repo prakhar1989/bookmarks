@@ -64,7 +64,9 @@ export function BookmarksList({
 
         // Handle dynamic endpoint that might already have params or path params
         const separator = endpoint.includes("?") ? "&" : "?";
-        const response = await fetch(`${endpoint}${separator}${params.toString()}`);
+        const response = await fetch(
+          `${endpoint}${separator}${params.toString()}`,
+        );
 
         if (!response.ok) {
           throw new Error("Failed to fetch bookmarks");
@@ -134,9 +136,7 @@ export function BookmarksList({
   if (!data || data.bookmarks.length === 0) {
     return (
       <div className="p-8 text-center bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
-        <p className="text-gray-600 dark:text-gray-400">
-          No bookmarks yet.
-        </p>
+        <p className="text-gray-600 dark:text-gray-400">No bookmarks yet.</p>
       </div>
     );
   }

@@ -26,7 +26,11 @@ export function ClickableTags({ tags }: ClickableTagsProps) {
   return (
     <div className="flex flex-wrap gap-2.5 mb-4">
       {tags.map((tag) => (
-        <Tag key={tag.id} name={tag.name} onClick={() => handleTagClick(tag.name)} />
+        <Tag
+          key={tag.id}
+          name={tag.name}
+          onClick={() => handleTagClick(tag.name)}
+        />
       ))}
     </div>
   );

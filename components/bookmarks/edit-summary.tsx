@@ -89,7 +89,9 @@ export function EditSummary({
             value={summary}
             onChange={(e) => setSummary(e.target.value)}
             placeholder={`Edit the ${type === "short" ? "summary" : "detailed summary"}...`}
-            className={type === "long" ? "min-h-[200px] mb-3" : "min-h-[100px] mb-3"}
+            className={
+              type === "long" ? "min-h-[200px] mb-3" : "min-h-[100px] mb-3"
+            }
             autoFocus
           />
           <div className="flex gap-2">

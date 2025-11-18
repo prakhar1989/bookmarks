@@ -23,9 +23,7 @@ export function ReprocessButton({
 
   const handleReprocess = async () => {
     if (
-      !confirm(
-        "This will regenerate the AI summary and metadata. Continue?",
-      )
+      !confirm("This will regenerate the AI summary and metadata. Continue?")
     ) {
       return;
     }
@@ -58,7 +56,9 @@ export function ReprocessButton({
       size={size}
       className={className}
     >
-      <RefreshCw className={`w-4 h-4 mr-2 ${isReprocessing ? "animate-spin" : ""}`} />
+      <RefreshCw
+        className={`w-4 h-4 mr-2 ${isReprocessing ? "animate-spin" : ""}`}
+      />
       {isReprocessing ? "Reprocessing..." : "Summarize"}
     </Button>
   );

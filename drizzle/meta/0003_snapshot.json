@@ -89,12 +89,8 @@
           "name": "bookmark_contents_bookmark_id_bookmarks_id_fk",
           "tableFrom": "bookmark_contents",
           "tableTo": "bookmarks",
-          "columnsFrom": [
-            "bookmark_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["bookmark_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -159,12 +155,8 @@
           "name": "bookmark_tags_bookmark_id_bookmarks_id_fk",
           "tableFrom": "bookmark_tags",
           "tableTo": "bookmarks",
-          "columnsFrom": [
-            "bookmark_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["bookmark_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -172,12 +164,8 @@
           "name": "bookmark_tags_tag_id_tags_id_fk",
           "tableFrom": "bookmark_tags",
           "tableTo": "tags",
-          "columnsFrom": [
-            "tag_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["tag_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -185,10 +173,7 @@
       "compositePrimaryKeys": {
         "bookmark_tags_bookmark_id_tag_id_pk": {
           "name": "bookmark_tags_bookmark_id_tag_id_pk",
-          "columns": [
-            "bookmark_id",
-            "tag_id"
-          ]
+          "columns": ["bookmark_id", "tag_id"]
         }
       },
       "uniqueConstraints": {},
@@ -342,12 +327,8 @@
           "name": "bookmarks_user_id_users_id_fk",
           "tableFrom": "bookmarks",
           "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -432,12 +413,8 @@
           "name": "tags_user_id_users_id_fk",
           "tableFrom": "tags",
           "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -486,16 +463,12 @@
         "users_email_unique": {
           "name": "users_email_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "email"
-          ]
+          "columns": ["email"]
         },
         "users_username_unique": {
           "name": "users_username_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "username"
-          ]
+          "columns": ["username"]
         }
       },
       "policies": {},
@@ -507,11 +480,7 @@
     "public.bookmark_status": {
       "name": "bookmark_status",
       "schema": "public",
-      "values": [
-        "pending",
-        "processed",
-        "failed"
-      ]
+      "values": ["pending", "processed", "failed"]
     }
   },
   "schemas": {},

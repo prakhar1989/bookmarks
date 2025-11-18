@@ -27,13 +27,13 @@ export default function Home() {
             Save links, automatically extract content, and search with
             AI-powered summaries and tags.
           </p>
-            <Button
-              asChild
-              size="lg"
-              className="transition-all duration-300 hover:scale-105 hover:shadow-lg"
-            >
-              <Link href={app.urls.signUp}>Get Started</Link>
-            </Button>
+          <Button
+            asChild
+            size="lg"
+            className="transition-all duration-300 hover:scale-105 hover:shadow-lg"
+          >
+            <Link href={app.urls.signUp}>Get Started</Link>
+          </Button>
         </div>
       </main>
     );

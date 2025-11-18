@@ -100,14 +100,15 @@ IMPORTANT:
         url: input.url,
       });
 
-      const response: GenerateContentResponse = await client.models.generateContent({
-        model,
-        contents: prompt,
-        config: {
-          tools: [urlContextTool, groundingTool],
-          maxOutputTokens: 4000,
-        },
-      });
+      const response: GenerateContentResponse =
+        await client.models.generateContent({
+          model,
+          contents: prompt,
+          config: {
+            tools: [urlContextTool, groundingTool],
+            maxOutputTokens: 4000,
+          },
+        });
 
       const text = response.text;
 
@@ -120,10 +121,10 @@ IMPORTANT:
       }
 
       // Log grounding metadata if available
-      if (response.candidates &&  response.candidates[0].groundingMetadata) {
+      if (response.candidates && response.candidates[0].groundingMetadata) {
         console.log("[LLM] Grounding metadata received", {
           url: input.url,
-          groundingMetadata: response.candidates[0].groundingMetadata
+          groundingMetadata: response.candidates[0].groundingMetadata,
         });
       }
 
@@ -132,7 +133,7 @@ IMPORTANT:
         attempt: attempt + 1,
         responseLength: text?.length || 0,
         hasResponse: !!text,
-        candidates: response.candidates
+        candidates: response.candidates,
       });
 
       if (!text) {

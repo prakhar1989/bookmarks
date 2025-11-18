@@ -21,7 +21,7 @@ async function inspectUsers() {
 
   const users = await db.select().from(schema.users);
   console.log("All users in DB:");
-  users.forEach(u => {
+  users.forEach((u) => {
     console.log(`ID: ${u.id}, Email: ${u.email}, Username: '${u.username}'`);
   });
 }

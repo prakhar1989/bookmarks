@@ -28,7 +28,7 @@ async function backfillSearchVectors() {
     .from(schema.bookmarks)
     .innerJoin(
       schema.bookmarkContents,
-      eq(schema.bookmarks.id, schema.bookmarkContents.bookmarkId)
+      eq(schema.bookmarks.id, schema.bookmarkContents.bookmarkId),
     );
 
   console.log(`Found ${bookmarks.length} bookmarks to backfill`);
@@ -54,10 +54,15 @@ async function backfillSearchVectors() {
       `);
 
       successCount++;
-      console.log(`[${index + 1}/${bookmarks.length}] Updated search vector for: ${bookmark.url}`);
+      console.log(
+        `[${index + 1}/${bookmarks.length}] Updated search vector for: ${bookmark.url}`,
+      );
     } catch (error) {
       errorCount++;
-      console.error(`[${index + 1}/${bookmarks.length}] Error updating search vector for: ${bookmark.url}`, error);
+      console.error(
+        `[${index + 1}/${bookmarks.length}] Error updating search vector for: ${bookmark.url}`,
+        error,
+      );
     }
   }
 

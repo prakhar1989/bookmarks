@@ -55,6 +55,6 @@ export function AddBookmarkModal({ isOpen, onClose }: AddBookmarkModalProps) {
         </div>
       </Card>
     </div>,
-    document.body
+    document.body,
   );
 }

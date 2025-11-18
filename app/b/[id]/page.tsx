@@ -83,7 +83,10 @@ async function getBookmark(
       )
       .where(
         userId
-          ? and(eq(schema.bookmarks.id, id), eq(schema.bookmarks.userId, userId))
+          ? and(
+              eq(schema.bookmarks.id, id),
+              eq(schema.bookmarks.userId, userId),
+            )
           : eq(schema.bookmarks.id, id),
       )
       .limit(1);
@@ -272,7 +275,8 @@ export default async function BookmarkDetailPage({
                     {bookmark.errorMessage}
                   </p>
                   <p className="text-xs text-red-600 dark:text-red-400 mt-2">
-                    Use the &ldquo;Reprocess with AI&rdquo; button above to retry.
+                    Use the &ldquo;Reprocess with AI&rdquo; button above to
+                    retry.
                   </p>
                 </div>
               </div>

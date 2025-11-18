@@ -4,8 +4,6 @@ A personal bookmarking application with AI-powered analysis, summarization, and 
 
 <img width="382" alt="localhost_3000_b_4c0ef6b2-c62a-4b02-992c-c7d5d63365d9(Pixel 7)" src="https://github.com/user-attachments/assets/dd426e8b-aa20-46f3-a392-ce41f5ea7fa7" />
 
-
-
 ## Features
 
 - **Smart Bookmarking**: Save any URL with an optional personal note
@@ -85,6 +83,7 @@ Visit `http://localhost:3000` to see the application running. Sign in and start 
 ### Technology Details
 
 **URL Context + Grounding**: Instead of manually extracting HTML content, the app uses Gemini's built-in capabilities:
+
 - **URL Context Tool**: Directly fetches and processes content from the provided URL
 - **Google Search Grounding**: Provides additional web context when needed
 - Supports multiple formats: HTML, PDF, images, JSON, and more

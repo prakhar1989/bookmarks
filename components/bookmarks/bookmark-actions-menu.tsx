@@ -38,14 +38,17 @@ export function BookmarkActionsMenu({
 
     if (isOpen) {
       document.addEventListener("mousedown", handleClickOutside);
-      return () => document.removeEventListener("mousedown", handleClickOutside);
+      return () =>
+        document.removeEventListener("mousedown", handleClickOutside);
     }
   }, [isOpen]);
 
   // Handle copying link to clipboard
   const handleCopyLink = async () => {
     try {
-      await navigator.clipboard.writeText(`${window.location.origin}/b/${bookmarkId}`);
+      await navigator.clipboard.writeText(
+        `${window.location.origin}/b/${bookmarkId}`,
+      );
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
       setIsOpen(false);
@@ -57,9 +60,7 @@ export function BookmarkActionsMenu({
   // Handle reprocessing
   const handleReprocess = async () => {
     if (
-      !confirm(
-        "This will regenerate the AI summary and metadata. Continue?",
-      )
+      !confirm("This will regenerate the AI summary and metadata. Continue?")
     ) {
       return;
     }
@@ -146,8 +147,12 @@ export function BookmarkActionsMenu({
               className="w-full px-4 py-2 text-left text-sm hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-3"
               disabled={isReprocessing}
             >
-              <RefreshCw className={`w-4 h-4 ${isReprocessing ? "animate-spin" : ""}`} />
-              <span>{isReprocessing ? "Reprocessing..." : "Summarize with AI"}</span>
+              <RefreshCw
+                className={`w-4 h-4 ${isReprocessing ? "animate-spin" : ""}`}
+              />
+              <span>
+                {isReprocessing ? "Reprocessing..." : "Summarize with AI"}
+              </span>
             </button>
 
             <button
