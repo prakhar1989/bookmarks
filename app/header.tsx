@@ -11,7 +11,7 @@ export function Header() {
   const app = useStackApp();
 
   return (
-    <header className="sticky top-0 z-20 border-b py-4 transition-all duration-300 hover:shadow-lg">
+    <header className="sticky top-0 z-20 border-b bg-background py-4 transition-all duration-300 hover:shadow-lg">
       <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4">
         <div className="flex items-center gap-4 animate-fade-in-up">
           <Image
