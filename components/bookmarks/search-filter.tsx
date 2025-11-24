@@ -55,7 +55,7 @@ export function SearchFilter({ tags }: SearchFilterProps) {
     <div className="space-y-6 animate-fade-in-up">
       {/* Search Bar */}
       <div className="relative group">
-        <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground transition-all duration-300 group-focus-within:text-primary group-focus-within:scale-110" />
+        <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground transition-all duration-300 group-focus-within:text-primary group-focus-within:scale-110" />
         <Input
           type="text"
           placeholder="Search... (github.com, agents, etc.)"
