@@ -15,7 +15,7 @@
     "@google/genai": "^1.29.1",
     "@neondatabase/serverless": "^0.10.4",
     "@radix-ui/react-slot": "^1.2.4",
-    "@stackframe/stack": "^2.6.8",
+    "@stackframe/stack": "^2.8.54",
     "@tailwindcss/postcss": "^4.1.17",
     "@types/node": "^20.11.0",
     "@types/react": "^19.2.7",
