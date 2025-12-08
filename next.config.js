@@ -9,10 +9,8 @@ const nextConfig = {
       },
     ],
   },
-  webpack: (config) => {
-    config.externals.push("bun:sqlite");
-    return config;
-  },
+  serverExternalPackages: ["bun:sqlite"],
+  turbopack: {},
 };
 
 module.exports = nextConfig;

@@ -1,13 +1,14 @@
 "use client";
+import { use } from "react";
 import { Header } from "app/header";
 import { BookmarksList } from "app/bookmarks-list";
 
 export default function UserProfilePage({
   params,
 }: {
-  params: { username: string };
+  params: Promise<{ username: string }>;
 }) {
-  const { username } = params;
+  const { username } = use(params);
 
   return (
     <div className="flex flex-1 flex-col">
