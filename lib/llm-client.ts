@@ -10,7 +10,7 @@ const LLMResultSchema = z.object({
     .optional(),
   summary_long: z
     .string()
-    .describe("Multi-paragraph detailed summary")
+    .describe("Detailed summary of the content. Highlight top 5 takeaways from the content and return bullet points")
     .optional(),
   language: z.string().describe("Detected language code (e.g., 'en', 'ja')"),
   tags: z
